@@ -1,0 +1,5 @@
+# kdevelop
+*.kdev4
+
+# pycharm
+.idea*
