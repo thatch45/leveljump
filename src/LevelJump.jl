@@ -2,9 +2,9 @@ module LevelJump
 
 const lib = "libleveldb"
 
-type LevelDB{K, V} <: Associative{K, V}
+type LevelDB
     db::Ptr
-    it::Ptr
+    #it::Ptr
     path::AbstractString
 end
 
@@ -28,13 +28,13 @@ function LevelDB(path::AbstractString, create_if_missing::Bool=true)
     if db == C_NULL
         error(bytestring(err[1]))
     end
-    it = ccall(
-               (:leveldb_create_iterator, lib),
-               Ptr{Void},
-               (Ptr{Void}, Ptr{Void}),
-               db, options,
-               )
-    ldb = LevelDB(db, it, path)
+    #it = ccall(
+    #           (:leveldb_create_iterator, lib),
+    #           Ptr{Void},
+    #           (Ptr{Void}, Ptr{Void}),
+    #           db, options,
+    #           )
+    ldb = LevelDB(db, path)
     return ldb
 end
 
@@ -134,6 +134,7 @@ function batch(ldb::LevelDB, array::Array)
           ldb, options, w_batch, err)
     if err[1] != C_NULL
         error(bytestring(err[1]))
+    end
 end
 
 function iter_valid(ldb::LevelDB)
