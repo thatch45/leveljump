@@ -179,6 +179,5 @@ function iter_next(ldb::LevelDB)
           ldb.it)
 end
 
-
 # module end
 end
